@@ -10,6 +10,15 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.correctiontp1mmm.ui.ClientListAdapter;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,7 +96,7 @@ public class FirebaseRepository implements IRepository {
 
     void onSignedOut() {
         mUsername = ANONYMOUS;
-        contacts.clear();
+        clientListAdapter.getClients().clear();
         if (mChildEventListener != null) {
             mContactsDatabaseReference.removeEventListener(mChildEventListener) ;
         }
@@ -104,27 +113,27 @@ public class FirebaseRepository implements IRepository {
                     mChildEventListener = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            Contact contact = dataSnapshot.getValue(Contact.class);
+                            Client contact = dataSnapshot.getValue(Client.class);
                             // don't forget to set the key to identify the Contact!
                             contact.setUid(dataSnapshot.getKey());
-                            contacts.add(contact);
-                            mAdapter.notifyDataSetChanged();
+                            clientListAdapter.getClients().add(contact);
+                            clientListAdapter.notifyDataSetChanged();
                         }
 
                         @Override
                         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                            Contact contact = dataSnapshot.getValue(Contact.class);
+                            Client contact = dataSnapshot.getValue(Client.class);
                             contact.setUid(dataSnapshot.getKey());
-                            mAdapter.updateContact(contact);
-                            mAdapter.notifyDataSetChanged();
+                            clientListAdapter.updateContact(contact);
+                            clientListAdapter.notifyDataSetChanged();
                         }
 
                         @Override
                         public void onChildRemoved(DataSnapshot dataSnapshot) {
                             //Contact msg = dataSnapshot.getValue(Contact.class);
                             // don't forget to set the key to identify the Contact!
-                            mAdapter.removeContactWithId(dataSnapshot.getKey());
-                            mAdapter.notifyDataSetChanged();
+                            clientListAdapter.removeContactWithId(dataSnapshot.getKey());
+                            clientListAdapter.notifyDataSetChanged();
                         }
 
                         @Override

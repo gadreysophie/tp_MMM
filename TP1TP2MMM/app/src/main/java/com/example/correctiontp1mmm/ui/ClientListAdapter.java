@@ -18,6 +18,16 @@ import java.util.List;
 
 public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.ClientHolder> {
     private List<Client> clients = new ArrayList<>();
+    public List<Client> getClients () {return clients;}
+
+    public void updateContact (Client client){
+        Client c = clients.stream()
+                .filter(customer -> client.getUid().equals(customer.getUid()))
+                .findAny().
+                orElse(null);
+        int index = clients.indexOf(c);
+        clients.set(index, client);
+    }
 
 
     @NonNull
@@ -48,6 +58,9 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 
     public Client getClientAt(int adapterPosition) {
         return clients.get(adapterPosition);
+    }
+
+    public void removeContactWithId(String key) {
     }
 
     class ClientHolder extends RecyclerView.ViewHolder {

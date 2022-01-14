@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.correctiontp1mmm.data.Client;
 import com.example.correctiontp1mmm.data.ClientList;
+import com.example.correctiontp1mmm.data.FirebaseRepository;
 import com.example.correctiontp1mmm.data.IRepository;
 import com.example.correctiontp1mmm.ui.ClientListAdapter;
 import com.example.correctiontp1mmm.viewmodel.ClientListViewModel;
@@ -49,11 +50,14 @@ public class FirstFragment extends Fragment {
         final ClientListAdapter adapter = new ClientListAdapter();
         recyclerView.setAdapter(adapter);
 
+        //on crée le repository
+        FirebaseRepository rbr = new FirebaseRepository(getActivity().getApplication());
+
         // on crée une instance de notre ViewModel
 
         viewModel = new ViewModelProvider(requireActivity()).get(ClientListViewModel.class);
 
-
+        viewModel.setRepository(rbr);
 
         // et on ajoute un observer sur les clients...
         viewModel.getAllUsers().observe(getViewLifecycleOwner(), new Observer<List<Client>>() {

@@ -7,8 +7,19 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "client_table")
 public class Client {
+
     @PrimaryKey(autoGenerate = true)
-    public int uid;
+    public int id;
+
+    public String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getLastName() {
         return lastName;
